@@ -1,0 +1,111 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.3.0.RELEASE")
+    }
+}
+
+plugins {
+    id 'net.ltgt.apt' version '0.21'
+}
+
+def versionTag() {
+    return new Date().format("yyyyMMddHH", TimeZone.getTimeZone("Asia/Shanghai"))
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        jcenter()
+        mavenCentral()
+    }
+
+    group 'li.fyun'
+    version = versionTag()
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven'
+    apply plugin: 'net.ltgt.apt-idea'
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+
+    configurations {
+        all*.exclude group: 'com.vaadin.external.google', module: 'android-json'
+        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+
+    dependencies {
+        annotationProcessor 'org.projectlombok:lombok'
+        implementation 'org.projectlombok:lombok:1.18.12'
+        annotationProcessor("org.mapstruct:mapstruct-processor:1.3.1.Final")
+        implementation('org.mapstruct:mapstruct-jdk8:1.3.1.Final')
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'io.rest-assured:rest-assured:4.3.0'
+        implementation "org.springframework.boot:spring-boot-configuration-processor"
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.json:json:20190722'
+        implementation 'com.google.guava:guava:29.0-jre'
+        implementation 'org.apache.commons:commons-lang3:3.10'
+        implementation 'org.apache.commons:commons-collections4:4.4'
+        implementation 'net.rossillo.mvc.cache:spring-mvc-cache-control:1.1.1-RELEASE'
+        implementation 'org.hibernate.validator:hibernate-validator:6.1.5.Final'
+        implementation 'joda-time:joda-time:2.10.6'
+    }
+
+    sourceCompatibility = 1.8 // java 8
+    targetCompatibility = 1.8
+
+    task buildJar(type: Jar, dependsOn: classes) {
+        from 'build/classes/java/main'
+        from 'build/resources/main'
+        exclude('**/*Application.class')
+        exclude('application.yml')
+        exclude('logback.xml')
+        exclude('ehcache.xml')
+        exclude('h2database')
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives buildJar
+        archives sourcesJar
+    }
+
+    // To specify a license in the pom:
+    install {
+        repositories.mavenInstaller {
+            pom.project {
+                licenses {
+                    license {
+                        name 'The MIT License'
+                        url 'https://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }
+    }
+
+    apply from: "../querydsl.gradle"
+}

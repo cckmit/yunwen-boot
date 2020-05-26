@@ -1,0 +1,24 @@
+app:
+  alidayu:
+    app-key: YourKey
+    secret-key: YourSecret
+    sign-name: YourSign
+    timeout: 10000
+spring:
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: username
+    password: password
+    from: emailFrom
+    properties:
+      mail:
+        smtp:
+          port: 465
+          auth: true
+          timeout: 250000
+          starttls:
+            enable: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465

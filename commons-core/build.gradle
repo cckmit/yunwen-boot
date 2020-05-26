@@ -1,0 +1,10 @@
+bootJar {
+    archiveBaseName = 'yunwen-commons-core'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-core-starter"
+    enabled = true
+}

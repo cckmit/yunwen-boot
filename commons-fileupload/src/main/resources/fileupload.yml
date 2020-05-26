@@ -1,0 +1,14 @@
+app:
+  fileupload:
+    storage: FILE_SYSTEM
+    allow-content-types: image/*, text/*, application/pdf
+    open-with-browser-content-types: image, text
+    web-upload-path: /upload
+    store-path-return-with-context: true
+#    aliyun-oss-access-key: yourKey
+#    aliyun-oss-secret: YourSecret
+#    aliyun-oss-bucket: YourBucket
+#    aliyun-oss-bucket-domain: https://yourBucketDomain/
+#    aliyun-oss-region-internet-endpoint: oss-cn-shenzhen.aliyuncs.com
+#    aliyun-oss-region-intranet-endpoint: oss-cn-shenzhen-internal.aliyuncs.com
+#    aliyun-oss-use-intranet-region: false

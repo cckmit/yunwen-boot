@@ -1,0 +1,18 @@
+dependencies {
+    testImplementation 'com.h2database:h2'
+    implementation "org.springframework.boot:spring-boot-configuration-processor"
+    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.9.1'
+    implementation 'com.aliyun:aliyun-java-sdk-core:4.5.1'
+    implementation project(":commons-core")
+}
+
+bootJar {
+    archivesBaseName = 'yunwen-commons-fileupload'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-fileupload-starter"
+    enabled = true
+}

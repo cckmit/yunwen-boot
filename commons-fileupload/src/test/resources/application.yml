@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    schema: classpath:h2database/schema-h2.sql
+    data: classpath:h2database/data-h2.sql
+    url: jdbc:h2:mem:test
+    username: root
+    password: test
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+      location: /tmp/springboot
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.StdDateFormat
+    time-zone: GMT+8
+server:
+  undertow:
+    io-threads: 8
+    worker-threads: 256
+    buffer-size: 1024
+    direct-buffers: true

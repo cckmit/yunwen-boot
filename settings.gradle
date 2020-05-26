@@ -1,0 +1,9 @@
+rootProject.name = 'yunwen-boot'
+include 'commons-core'
+include 'showcase'
+include 'commons-xss'
+include 'commons-fileupload'
+include 'commons-security'
+include 'commons-jwt'
+include 'commons-messaging'
+

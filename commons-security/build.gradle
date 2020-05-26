@@ -1,0 +1,22 @@
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.security:spring-security-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.hibernate:hibernate-jcache'
+    implementation 'org.ehcache:ehcache'
+    implementation 'com.github.whvcse:easy-captcha:1.6.2'
+    implementation project(":commons-core")
+    implementation project(":commons-messaging")
+    implementation project(":commons-fileupload")
+}
+
+bootJar {
+    archiveBaseName = 'yunwen-commons-security'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-security-starter"
+    enabled = true
+}

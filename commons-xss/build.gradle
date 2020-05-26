@@ -1,0 +1,15 @@
+dependencies {
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation project(":commons-core")
+}
+
+bootJar {
+    archivesBaseName = 'yunwen-commons-xss'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-xss-starter"
+    enabled = true
+}

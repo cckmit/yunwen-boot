@@ -1,0 +1,17 @@
+app:
+  security:
+    jwt:
+      access-token-expiration-time: 604800000
+      refresh-token-expiration-time: 2592000000
+      token-secret-key: i2k9xZtrMeVgIOJplwPc4QE8unAfU1oF
+      token-prefix: Bearer.
+      token-header-string: Authorization
+      default-permit-all: true
+      public-assets: /*.html, /*.js, /*.css, /*.ico, /html/**/*, /js/**/*, /css/**/*, /images/**/*, /json/**/*, /upload/**/*
+      allow-query-param: false
+      allow-query-param-urls:
+      open-id-types: wechat_open_id
+      issuer: fyun.li
+      login-url: /security/login
+      logout-url: /security/logout
+      need-image-captcha-urls:

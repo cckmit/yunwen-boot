@@ -1,0 +1,8 @@
+app:
+  security:
+    account:
+      lock-duration: 86400000
+      login-fail-try-times: 5
+      new-account-disabled: false
+  sms-template:
+    captcha: SMS_185600086

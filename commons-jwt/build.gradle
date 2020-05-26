@@ -1,0 +1,17 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.auth0:java-jwt:3.10.3'
+    implementation project(":commons-core")
+    implementation project(":commons-security")
+}
+
+bootJar {
+    archiveBaseName = 'yunwen-commons-jwt'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-jwt-starter"
+    enabled = true
+}

@@ -1,0 +1,18 @@
+dependencies {
+    testImplementation 'com.h2database:h2'
+    implementation 'com.aliyun:aliyun-java-sdk-dysmsapi:2.1.0'
+    implementation 'com.aliyun:aliyun-java-sdk-core:4.5.1'
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation project(":commons-core")
+}
+
+bootJar {
+    archiveBaseName = 'yunwen-commons-messaging'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-messaging-starter"
+    enabled = true
+}
