@@ -43,7 +43,8 @@ public class FileUploadController extends BaseController {
 
     @CacheControl(maxAge = 60 * 60 * 24, policy = {CachePolicy.PUBLIC})
     @GetMapping(value = FileStorage.FILE_PATH_PREFIX + "/{filename}")
-    public ResponseEntity<byte[]> get(@PathVariable String filename, HttpServletRequest request) throws IOException, NoSuchMethodException {
+    public ResponseEntity<byte[]> get(@PathVariable String filename, HttpServletRequest request)
+            throws IOException, NoSuchMethodException {
         MultipartFile file = fileStorage.get(filename);
         String contentType = file.getContentType();
         ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.ok()
@@ -52,13 +53,14 @@ public class FileUploadController extends BaseController {
 
         if (!ArrayUtils.contains(fileUploadProperties.getOpenWithBrowserContentTypes(),
                 StringUtils.substringBefore(contentType, "/"))) {
-            bodyBuilder.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" +
-                    populateFileName(request, file.getName()));
+            String suggestFilename = suggestFilename(request, file.getName());
+            bodyBuilder.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + suggestFilename)
+                    .header("X-Suggested-Filename", suggestFilename);
         }
         return bodyBuilder.body(file.getBytes());
     }
 
-    private String populateFileName(HttpServletRequest request, String fileName) {
+    protected String suggestFilename(HttpServletRequest request, String fileName) {
         try {
             String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
             if (StringUtils.contains(userAgent, "MSIE")
@@ -75,7 +77,8 @@ public class FileUploadController extends BaseController {
 
     @CacheControl(maxAge = 60 * 60 * 24, policy = {CachePolicy.PUBLIC})
     @GetMapping(value = "/real-path/{filename}/**", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, String> getRealPath(@PathVariable String filename, ServletRequest request) throws IOException, NoSuchMethodException {
+    public Map<String, String> getRealPath(@PathVariable String filename, ServletRequest request)
+            throws IOException, NoSuchMethodException {
         final String path = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
         final String bestMatchingPattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
         String arguments = new AntPathMatcher().extractPathWithinPattern(bestMatchingPattern, path);
