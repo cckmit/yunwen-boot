@@ -189,7 +189,7 @@ public class SecurityService {
         userAccountRepository.save(userAccount);
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = BadCredentialsException.class)
     public UserAccount login(String username, String password) throws AuthenticationException {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             throw new IllegalArgumentException("非法参数");
