@@ -6,4 +6,5 @@ include 'commons-fileupload'
 include 'commons-security'
 include 'commons-jwt'
 include 'commons-messaging'
+include 'commons-rule'
 

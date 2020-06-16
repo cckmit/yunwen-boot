@@ -1,0 +1,15 @@
+dependencies {
+    implementation 'org.jeasy:easy-rules-mvel:3.4.0'
+    implementation project(":commons-core")
+}
+
+bootJar {
+    archivesBaseName = 'yunwen-commons-rule'
+    archiveVersion = versionTag()
+    enabled = false
+}
+
+jar {
+    archivesBaseName = "yunwen-commons-rule"
+    enabled = true
+}
