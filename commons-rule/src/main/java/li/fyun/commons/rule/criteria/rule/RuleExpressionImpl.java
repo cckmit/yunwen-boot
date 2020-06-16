@@ -91,57 +91,47 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("in条件应提供非空集合数值");
                 }
-                valueList = (List) value;
-                expr = "(";
-                boolean starts = true;
-                for (Object val : valueList) {
-                    if (!starts) {
-                        expr += CONJUNCTION_OR;
-                    }
-                    starts = false;
-                    expr += field + " == " + wrapValueToProperType(val, valueType);
-                }
-                expr += ")";
-                return expr;
+                return abcde(valueType, "==");
             case notIn:
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("notIn条件应提供非空集合数值");
                 }
-                valueList = (List) value;
-                expr = "(";
-                starts = true;
-                for (Object val : valueList) {
-                    if (!starts) {
-                        expr += CONJUNCTION_AND;
-                    }
-                    starts = false;
-                    expr += field + " != " + wrapValueToProperType(val, valueType);
-                }
-                expr += ")";
-                return expr;
+                return abcde(valueType, "!=");
             case belong:
-                if (value instanceof List && CollectionUtils.isNotEmpty((List) value)) {
-                    valueList = (List) value;
-                    expr = "(";
-                    starts = true;
-                    for (Object val : valueList) {
-                        if (!starts) {
-                            expr += CONJUNCTION_OR;
-                        }
-                        starts = false;
-                        expr += field + ".startsWith(" + wrapValueToProperType(val, valueType) + ")";
-                    }
-                    expr += ")";
-                    return expr;
-                } else {
-                    return field + ".startsWith(" + wrapValueToProperType(value, valueType) + ")";
-                }
+            case startsWith:
+                return abcde(valueType, ".startsWith");
+            case endsWith:
+                return abcde(valueType, ".endsWith");
+            case contains:
+                return abcde(valueType, ".contains");
             case isNull:
                 return field + " == null";
             case notNull:
                 return field + " != null";
             default:
                 return expr;
+        }
+    }
+
+    private String abcde(RuleValueType valueType, String comparor) {
+        List valueList;
+        String expr;
+        boolean starts;
+        if (value instanceof List && CollectionUtils.isNotEmpty((List) value)) {
+            valueList = (List) value;
+            expr = "(";
+            starts = true;
+            for (Object val : valueList) {
+                if (!starts) {
+                    expr += CONJUNCTION_OR;
+                }
+                starts = false;
+                expr += field + comparor + "(" + wrapValueToProperType(val.toString(), valueType) + ")";
+            }
+            expr += ")";
+            return expr;
+        } else {
+            return field + comparor + "(" + wrapValueToProperType(value.toString(), valueType) + ")";
         }
     }
 

@@ -17,6 +17,9 @@ public enum RuleComparator {
     in("在...中"),
     notIn("不在...中"),
     belong("属于"),
+    contains("包含"),
+    startsWith("以...开头"),
+    endsWith("以...结尾"),
     isNull("为空"),
     notNull("不为空");
 
