@@ -1,5 +1,6 @@
 package li.fyun.commons.rule.engine;
 
+import com.google.common.collect.ImmutableList;
 import li.fyun.commons.rule.enums.RuleItemRelation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -82,6 +83,13 @@ public final class RuleHelper {
         } else {
             return new RuleWrapper(rule);
         }
+    }
+
+    public static Map<String, Object> testSingleRule(IRule rule, Map<String, Object> param) {
+        RulesWrapper rules = RuleHelper.getRules(ImmutableList.of(rule));
+        Map<String, Object> result = RuleHelper.fire(rules, param, RuleItemRelation.AND);
+        result.keySet().removeAll(param.keySet());
+        return result;
     }
 
     public static boolean testCondition(String condition, Map<String, Object> params) {
