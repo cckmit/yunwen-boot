@@ -91,19 +91,19 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("in条件应提供非空集合数值");
                 }
-                return abcde(valueType, "==");
+                return populate(valueType, "==");
             case notIn:
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("notIn条件应提供非空集合数值");
                 }
-                return abcde(valueType, "!=");
+                return populate(valueType, "!=");
             case belong:
             case startsWith:
-                return abcde(valueType, ".startsWith");
+                return populate(valueType, ".startsWith");
             case endsWith:
-                return abcde(valueType, ".endsWith");
+                return populate(valueType, ".endsWith");
             case contains:
-                return abcde(valueType, ".contains");
+                return populate(valueType, ".contains");
             case isNull:
                 return field + " == null";
             case notNull:
@@ -113,7 +113,7 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         }
     }
 
-    private String abcde(RuleValueType valueType, String comparor) {
+    private String populate(RuleValueType valueType, String comparor) {
         List valueList;
         String expr;
         boolean starts;
