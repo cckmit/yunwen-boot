@@ -91,12 +91,12 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("in条件应提供非空集合数值");
                 }
-                return populate(valueType, "==", CONJUNCTION_OR);
+                return populate(valueType, " == ", CONJUNCTION_OR);
             case notIn:
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("notIn条件应提供非空集合数值");
                 }
-                return populate(valueType, "!=", CONJUNCTION_AND);
+                return populate(valueType, " != ", CONJUNCTION_AND);
             case belong:
             case startsWith:
                 return populate(valueType, ".startsWith", CONJUNCTION_OR);
