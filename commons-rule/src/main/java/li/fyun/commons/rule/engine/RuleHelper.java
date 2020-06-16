@@ -12,6 +12,7 @@ import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.core.RulesEngineParameters;
 import org.jeasy.rules.mvel.MVELRule;
 import org.jeasy.rules.support.CompositeRule;
+import org.mvel2.MVEL;
 
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,14 @@ public final class RuleHelper {
         } else {
             return new RuleWrapper(rule);
         }
+    }
+
+    public static boolean testCondition(String condition, Map<String, Object> params) {
+        return (Boolean) MVEL.eval(condition, params);
+    }
+
+    public static Object testFormula(String formula, Map<String, Object> params) {
+        return MVEL.eval(formula, params);
     }
 
 }
