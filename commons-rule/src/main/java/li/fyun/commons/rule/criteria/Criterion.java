@@ -1,6 +1,6 @@
-package li.fyun.yunwen.rule.criteria;
+package li.fyun.commons.rule.criteria;
 
-import li.fyun.yunwen.rule.engine.IParam;
+import li.fyun.commons.rule.engine.IParam;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;

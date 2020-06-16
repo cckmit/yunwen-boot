@@ -1,4 +1,4 @@
-package li.fyun.yunwen.rule.engine;
+package li.fyun.commons.rule.engine;
 
 import org.jeasy.rules.api.Facts;
 import org.jeasy.rules.api.Rule;

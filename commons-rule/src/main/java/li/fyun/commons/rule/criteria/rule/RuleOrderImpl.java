@@ -1,6 +1,6 @@
-package li.fyun.yunwen.rule.criteria.rule;
+package li.fyun.commons.rule.criteria.rule;
 
-import li.fyun.yunwen.rule.criteria.Order;
+import li.fyun.commons.rule.criteria.Order;
 import lombok.Getter;
 import lombok.Setter;
 

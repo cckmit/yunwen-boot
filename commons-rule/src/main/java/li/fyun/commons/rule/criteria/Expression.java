@@ -1,4 +1,4 @@
-package li.fyun.yunwen.rule.criteria;
+package li.fyun.commons.rule.criteria;
 
 public interface Expression<T extends Expression, OP> extends Criterion<T> {
 

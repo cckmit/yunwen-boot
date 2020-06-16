@@ -1,6 +1,6 @@
-package li.fyun.yunwen.rule.criteria.rule;
+package li.fyun.commons.rule.criteria.rule;
 
-import li.fyun.yunwen.rule.criteria.Criterion;
+import li.fyun.commons.rule.criteria.Criterion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;

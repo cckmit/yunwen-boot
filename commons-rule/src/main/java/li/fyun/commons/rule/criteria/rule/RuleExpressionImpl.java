@@ -1,10 +1,10 @@
-package li.fyun.yunwen.rule.criteria.rule;
+package li.fyun.commons.rule.criteria.rule;
 
-import li.fyun.yunwen.rule.RuleException;
-import li.fyun.yunwen.rule.criteria.Expression;
-import li.fyun.yunwen.rule.engine.IParam;
-import li.fyun.yunwen.rule.enums.RuleComparator;
-import li.fyun.yunwen.rule.enums.RuleValueType;
+import li.fyun.commons.rule.RuleException;
+import li.fyun.commons.rule.criteria.Expression;
+import li.fyun.commons.rule.engine.IParam;
+import li.fyun.commons.rule.enums.RuleComparator;
+import li.fyun.commons.rule.enums.RuleValueType;
 import lombok.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

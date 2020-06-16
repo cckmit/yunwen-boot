@@ -1,6 +1,6 @@
-package li.fyun.yunwen.rule.engine;
+package li.fyun.commons.rule.engine;
 
-import li.fyun.yunwen.rule.enums.RuleValueType;
+import li.fyun.commons.rule.enums.RuleValueType;
 
 public interface IParam {
 

@@ -1,4 +1,4 @@
-package li.fyun.yunwen.rule.enums;
+package li.fyun.commons.rule.enums;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package li.fyun.yunwen.rule.engine;
+package li.fyun.commons.rule.engine;
 
 import lombok.Data;
 import org.jeasy.rules.api.Rule;

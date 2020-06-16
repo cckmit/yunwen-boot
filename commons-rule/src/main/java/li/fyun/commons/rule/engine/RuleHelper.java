@@ -1,6 +1,6 @@
-package li.fyun.yunwen.rule.engine;
+package li.fyun.commons.rule.engine;
 
-import li.fyun.yunwen.rule.enums.RuleItemRelation;
+import li.fyun.commons.rule.enums.RuleItemRelation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;

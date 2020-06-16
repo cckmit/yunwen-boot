@@ -1,4 +1,4 @@
-package li.fyun.yunwen.rule;
+package li.fyun.commons.rule;
 
 import li.fyun.commons.core.utils.YunwenException;
 

@@ -1,9 +1,9 @@
-package li.fyun.yunwen.rule.criteria.rule;
+package li.fyun.commons.rule.criteria.rule;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import li.fyun.yunwen.rule.RuleException;
-import li.fyun.yunwen.rule.criteria.Condition;
+import li.fyun.commons.rule.RuleException;
+import li.fyun.commons.rule.criteria.Condition;
 import lombok.Getter;
 import lombok.Setter;
 
