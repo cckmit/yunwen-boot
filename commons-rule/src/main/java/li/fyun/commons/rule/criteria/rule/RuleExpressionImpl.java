@@ -91,19 +91,19 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("in条件应提供非空集合数值");
                 }
-                return populate(valueType, "==");
+                return populate(valueType, "==", CONJUNCTION_OR);
             case notIn:
                 if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
                     throw new RuleException("notIn条件应提供非空集合数值");
                 }
-                return populate(valueType, "!=");
+                return populate(valueType, "!=", CONJUNCTION_AND);
             case belong:
             case startsWith:
-                return populate(valueType, ".startsWith");
+                return populate(valueType, ".startsWith", CONJUNCTION_OR);
             case endsWith:
-                return populate(valueType, ".endsWith");
+                return populate(valueType, ".endsWith", CONJUNCTION_OR);
             case contains:
-                return populate(valueType, ".contains");
+                return populate(valueType, ".contains", CONJUNCTION_OR);
             case isNull:
                 return field + " == null";
             case notNull:
@@ -113,7 +113,7 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         }
     }
 
-    private String populate(RuleValueType valueType, String comparor) {
+    private String populate(RuleValueType valueType, String comparor, String conjunction) {
         List valueList;
         String expr;
         boolean starts;
@@ -123,7 +123,7 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
             starts = true;
             for (Object val : valueList) {
                 if (!starts) {
-                    expr += CONJUNCTION_OR;
+                    expr += conjunction;
                 }
                 starts = false;
                 expr += field + comparor + "(" + wrapValueToProperType(val.toString(), valueType) + ")";
