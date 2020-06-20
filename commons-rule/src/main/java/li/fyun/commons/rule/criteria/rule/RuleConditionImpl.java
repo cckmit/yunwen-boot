@@ -1,5 +1,6 @@
 package li.fyun.commons.rule.criteria.rule;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import li.fyun.commons.rule.RuleException;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RuleConditionImpl extends RuleCriterionImpl implements Condition<RuleExpressionImpl, RuleOrderImpl> {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

@@ -1,5 +1,6 @@
 package li.fyun.commons.rule.criteria.rule;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import li.fyun.commons.rule.RuleException;
 import li.fyun.commons.rule.criteria.Expression;
 import li.fyun.commons.rule.engine.IParam;
@@ -18,6 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<RuleExpressionImpl, RuleComparator> {
 
     private String field;
