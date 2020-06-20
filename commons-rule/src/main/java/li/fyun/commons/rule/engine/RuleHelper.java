@@ -74,7 +74,10 @@ public final class RuleHelper {
         List<IRule> children = aRule.getChildren();
         if (CollectionUtils.isNotEmpty(aRule.getChildren())) {
             CompositeRule unitRuleGroup = new PostConditionalRuleGroup(
-                    RandomStringUtils.randomAlphabetic(6), aRule.getPriority(), rule);
+                    aRule.getName() + "_" + RandomStringUtils.randomAlphabetic(6),
+                    aRule.getPriority(),
+                    rule
+            );
             children.forEach(c -> {
                 RuleWrapper subRule = c.asRule(c.getPriority() + aRule.getPriority());
                 unitRuleGroup.addRule(subRule.getRule());
