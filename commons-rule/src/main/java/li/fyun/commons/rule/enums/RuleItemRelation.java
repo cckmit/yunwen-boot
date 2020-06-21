@@ -7,8 +7,8 @@ import java.util.Map;
 
 public enum RuleItemRelation {
 
-    OR("维度"),
-    AND("指标");
+    OR("或"),
+    AND("和");
 
     private String displayName;
 

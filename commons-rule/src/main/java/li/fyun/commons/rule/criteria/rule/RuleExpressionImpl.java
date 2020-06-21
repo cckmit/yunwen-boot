@@ -133,12 +133,17 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                     expr += conjunction;
                 }
                 starts = false;
-                expr += field + comparor + "(" + wrapValueToProperType(val.toString(), valueType) + ")";
+                expr += getCompareItem(valueType, comparor, val, prefix);
             }
             expr += ")";
+            return expr;
         } else {
-            expr = field + comparor + "(" + wrapValueToProperType(value.toString(), valueType) + ")";
+            return getCompareItem(valueType, comparor, value, prefix);
         }
+    }
+
+    private String getCompareItem(RuleValueType valueType, String comparor, Object val, String... prefix) {
+        String expr = field + comparor + "(" + wrapValueToProperType(val.toString(), valueType) + ")";
         if (ArrayUtils.isNotEmpty(prefix)) {
             expr = prefix[0] + "(" + expr + ")";
         }
