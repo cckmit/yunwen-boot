@@ -67,24 +67,25 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
 
         E param = findParam(ruleParams);
         RuleValueType valueType = param.getValueType();
+        Object compareVal = getCompareValue();
         switch (op) {
             case eq:
-                return field + " == " + wrapValueToProperType(value, valueType);
+                return field + " == " + wrapValueToProperType(compareVal, valueType);
             case ne:
-                return field + " != " + wrapValueToProperType(value, valueType);
+                return field + " != " + wrapValueToProperType(compareVal, valueType);
             case gt:
-                return field + " > " + wrapValueToProperType(value, valueType);
+                return field + " > " + wrapValueToProperType(compareVal, valueType);
             case lt:
-                return field + " < " + wrapValueToProperType(value, valueType);
+                return field + " < " + wrapValueToProperType(compareVal, valueType);
             case ge:
-                return field + " >= " + wrapValueToProperType(value, valueType);
+                return field + " >= " + wrapValueToProperType(compareVal, valueType);
             case le:
-                return field + " <= " + wrapValueToProperType(value, valueType);
+                return field + " <= " + wrapValueToProperType(compareVal, valueType);
             case between:
-                if (!(value instanceof List) || ((List) value).size() < 2) {
+                if (!(compareVal instanceof List) || ((List) compareVal).size() < 2) {
                     throw new RuleException("between条件应提供两个值");
                 }
-                List valueList = (List) value;
+                List valueList = (List) compareVal;
                 expr = "(";
                 expr += field + " >= " + wrapValueToProperType(valueList.get(0), valueType);
                 expr += CONJUNCTION_AND;
@@ -92,26 +93,26 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 expr += ")";
                 return expr;
             case in:
-                if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
+                if (!(compareVal instanceof List) || CollectionUtils.isEmpty((List) compareVal)) {
                     throw new RuleException("in条件应提供非空集合数值");
                 }
-                return populate(valueType, " == ", CONJUNCTION_OR);
+                return populate(valueType, " == ", compareVal, CONJUNCTION_OR);
             case notIn:
-                if (!(value instanceof List) || CollectionUtils.isEmpty((List) value)) {
+                if (!(compareVal instanceof List) || CollectionUtils.isEmpty((List) compareVal)) {
                     throw new RuleException("notIn条件应提供非空集合数值");
                 }
-                return populate(valueType, " != ", CONJUNCTION_AND);
+                return populate(valueType, " != ", compareVal, CONJUNCTION_AND);
             case belong:
             case startsWith:
-                return populate(valueType, ".startsWith", CONJUNCTION_OR);
+                return populate(valueType, ".startsWith", compareVal, CONJUNCTION_OR);
             case notBelong:
-                return populate(valueType, ".startsWith", CONJUNCTION_AND, "!");
+                return populate(valueType, ".startsWith", compareVal, CONJUNCTION_AND, "!");
             case endsWith:
-                return populate(valueType, ".endsWith", CONJUNCTION_OR);
+                return populate(valueType, ".endsWith", compareVal, CONJUNCTION_OR);
             case includes:
-                return populate(valueType, ".contains", CONJUNCTION_OR);
+                return populate(valueType, ".contains", compareVal, CONJUNCTION_OR);
             case excludes:
-                return populate(valueType, ".contains", CONJUNCTION_AND, "!");
+                return populate(valueType, ".contains", compareVal, CONJUNCTION_AND, "!");
             case isNull:
                 return field + " == null";
             case notNull:
@@ -121,20 +122,30 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         }
     }
 
-    private String populate(RuleValueType valueType, String comparor, String conjunction, String... prefix) {
-        if (value instanceof List && CollectionUtils.isNotEmpty((List) value)) {
-            return getCompareGroup(valueType, comparor, conjunction, (List) value, prefix);
-        } else {
-            if (value instanceof String && StringUtils.isNotBlank((String) value)) {
-                List valueList = Arrays.asList(StringUtils.split((String) value, " ,"));
-                return getCompareGroup(valueType, comparor, conjunction, valueList, prefix);
+    private Object getCompareValue() {
+        Object compareVal = value;
+        if (value instanceof String && StringUtils.isNotBlank((String) value)) {
+            String[] split = StringUtils.split((String) value, " ,");
+            if (split.length == 1) {
+                compareVal = split[0];
             } else {
-                return getCompareItem(valueType, comparor, value, prefix);
+                compareVal = Arrays.asList(split);
             }
+        }
+        return compareVal;
+    }
+
+    private String populate(RuleValueType valueType, String comparor, Object compareVal,
+                            String conjunction, String... prefix) {
+        if (compareVal instanceof List && CollectionUtils.isNotEmpty((List) compareVal)) {
+            return getCompareGroup(valueType, comparor, (List) compareVal, conjunction, prefix);
+        } else {
+            return getCompareItem(valueType, comparor, compareVal, prefix);
         }
     }
 
-    private String getCompareGroup(RuleValueType valueType, String comparor, String conjunction, List valueList, String[] prefix) {
+    private String getCompareGroup(RuleValueType valueType, String comparor, List valueList,
+                                   String conjunction, String[] prefix) {
         String expr = "(";
         boolean starts = true;
         for (Object val : valueList) {
