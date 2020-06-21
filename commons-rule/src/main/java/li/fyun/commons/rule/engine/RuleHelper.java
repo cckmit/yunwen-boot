@@ -58,8 +58,11 @@ public final class RuleHelper {
         }
 
         Rules rules = new Rules();
-        ruleItems.forEach(i -> rules.register(i.asRule().getRule()));
-        log.info("rules: {}", rules);
+        ruleItems.forEach(i -> {
+            rules.register(i.asRule().getRule());
+            log.info("rule {} registered, condition {}, action {}",
+                    i.getName(), i.getConditionExpression(), i.getActionExpression());
+        });
         return new RulesWrapper(rules);
     }
 
@@ -90,9 +93,7 @@ public final class RuleHelper {
 
     public static Map<String, Object> testSingleRule(IRule rule, Map<String, Object> param) {
         RulesWrapper rules = RuleHelper.getRules(ImmutableList.of(rule));
-        Map<String, Object> result = RuleHelper.fire(rules, param, RuleItemRelation.AND);
-        result.keySet().removeAll(param.keySet());
-        return result;
+        return RuleHelper.fire(rules, param, RuleItemRelation.AND);
     }
 
     public static boolean testCondition(String condition, Map<String, Object> params) {
