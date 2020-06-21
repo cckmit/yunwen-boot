@@ -8,6 +8,7 @@ import li.fyun.commons.rule.enums.RuleComparator;
 import li.fyun.commons.rule.enums.RuleValueType;
 import lombok.*;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 
@@ -102,10 +103,14 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
             case belong:
             case startsWith:
                 return populate(valueType, ".startsWith", CONJUNCTION_OR);
+            case notBelong:
+                return populate(valueType, ".startsWith", CONJUNCTION_AND, "!");
             case endsWith:
                 return populate(valueType, ".endsWith", CONJUNCTION_OR);
-            case contains:
+            case includes:
                 return populate(valueType, ".contains", CONJUNCTION_OR);
+            case excludes:
+                return populate(valueType, ".contains", CONJUNCTION_AND, "!");
             case isNull:
                 return field + " == null";
             case notNull:
@@ -115,7 +120,7 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         }
     }
 
-    private String populate(RuleValueType valueType, String comparor, String conjunction) {
+    private String populate(RuleValueType valueType, String comparor, String conjunction, String... prefix) {
         List valueList;
         String expr;
         boolean starts;
@@ -131,10 +136,13 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 expr += field + comparor + "(" + wrapValueToProperType(val.toString(), valueType) + ")";
             }
             expr += ")";
-            return expr;
         } else {
-            return field + comparor + "(" + wrapValueToProperType(value.toString(), valueType) + ")";
+            expr = field + comparor + "(" + wrapValueToProperType(value.toString(), valueType) + ")";
         }
+        if (ArrayUtils.isNotEmpty(prefix)) {
+            expr = prefix[0] + "(" + expr + ")";
+        }
+        return expr;
     }
 
     private Object wrapValueToProperType(Object value, RuleValueType valueType) {
