@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -121,25 +122,30 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
     }
 
     private String populate(RuleValueType valueType, String comparor, String conjunction, String... prefix) {
-        List valueList;
-        String expr;
-        boolean starts;
         if (value instanceof List && CollectionUtils.isNotEmpty((List) value)) {
-            valueList = (List) value;
-            expr = "(";
-            starts = true;
-            for (Object val : valueList) {
-                if (!starts) {
-                    expr += conjunction;
-                }
-                starts = false;
-                expr += getCompareItem(valueType, comparor, val, prefix);
-            }
-            expr += ")";
-            return expr;
+            return getCompareGroup(valueType, comparor, conjunction, (List) value, prefix);
         } else {
-            return getCompareItem(valueType, comparor, value, prefix);
+            if (value instanceof String && StringUtils.isNotBlank((String) value)) {
+                List valueList = Arrays.asList(StringUtils.split((String) value, " ,"));
+                return getCompareGroup(valueType, comparor, conjunction, valueList, prefix);
+            } else {
+                return getCompareItem(valueType, comparor, value, prefix);
+            }
         }
+    }
+
+    private String getCompareGroup(RuleValueType valueType, String comparor, String conjunction, List valueList, String[] prefix) {
+        String expr = "(";
+        boolean starts = true;
+        for (Object val : valueList) {
+            if (!starts) {
+                expr += conjunction;
+            }
+            starts = false;
+            expr += getCompareItem(valueType, comparor, val, prefix);
+        }
+        expr += ")";
+        return expr;
     }
 
     private String getCompareItem(RuleValueType valueType, String comparor, Object val, String... prefix) {
