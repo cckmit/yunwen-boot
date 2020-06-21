@@ -126,11 +126,7 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         Object compareVal = value;
         if (value instanceof String && StringUtils.isNotBlank((String) value)) {
             String[] split = StringUtils.split((String) value, " ,");
-            if (split.length == 1) {
-                compareVal = split[0];
-            } else {
-                compareVal = Arrays.asList(split);
-            }
+            compareVal = Arrays.asList(split);
         }
         return compareVal;
     }
