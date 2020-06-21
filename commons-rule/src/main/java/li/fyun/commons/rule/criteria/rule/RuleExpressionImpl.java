@@ -67,25 +67,29 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
 
         E param = findParam(ruleParams);
         RuleValueType valueType = param.getValueType();
-        Object compareVal = getCompareValue();
+        Object multiCompareValue = getMultiCompareValue();
         switch (op) {
+            case isNull:
+                return field + " == null";
+            case notNull:
+                return field + " != null";
             case eq:
-                return field + " == " + wrapValueToProperType(compareVal, valueType);
+                return field + " == " + wrapValueToProperType(value, valueType);
             case ne:
-                return field + " != " + wrapValueToProperType(compareVal, valueType);
+                return field + " != " + wrapValueToProperType(value, valueType);
             case gt:
-                return field + " > " + wrapValueToProperType(compareVal, valueType);
+                return field + " > " + wrapValueToProperType(value, valueType);
             case lt:
-                return field + " < " + wrapValueToProperType(compareVal, valueType);
+                return field + " < " + wrapValueToProperType(value, valueType);
             case ge:
-                return field + " >= " + wrapValueToProperType(compareVal, valueType);
+                return field + " >= " + wrapValueToProperType(value, valueType);
             case le:
-                return field + " <= " + wrapValueToProperType(compareVal, valueType);
+                return field + " <= " + wrapValueToProperType(value, valueType);
             case between:
-                if (!(compareVal instanceof List) || ((List) compareVal).size() < 2) {
+                if (!(multiCompareValue instanceof List) || ((List) multiCompareValue).size() < 2) {
                     throw new RuleException("between条件应提供两个值");
                 }
-                List valueList = (List) compareVal;
+                List valueList = (List) multiCompareValue;
                 expr = "(";
                 expr += field + " >= " + wrapValueToProperType(valueList.get(0), valueType);
                 expr += CONJUNCTION_AND;
@@ -93,36 +97,32 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
                 expr += ")";
                 return expr;
             case in:
-                if (!(compareVal instanceof List) || CollectionUtils.isEmpty((List) compareVal)) {
+                if (!(multiCompareValue instanceof List) || CollectionUtils.isEmpty((List) multiCompareValue)) {
                     throw new RuleException("in条件应提供非空集合数值");
                 }
-                return populate(valueType, " == ", compareVal, CONJUNCTION_OR);
+                return populate(valueType, " == ", multiCompareValue, CONJUNCTION_OR);
             case notIn:
-                if (!(compareVal instanceof List) || CollectionUtils.isEmpty((List) compareVal)) {
+                if (!(multiCompareValue instanceof List) || CollectionUtils.isEmpty((List) multiCompareValue)) {
                     throw new RuleException("notIn条件应提供非空集合数值");
                 }
-                return populate(valueType, " != ", compareVal, CONJUNCTION_AND);
+                return populate(valueType, " != ", multiCompareValue, CONJUNCTION_AND);
             case belong:
             case startsWith:
-                return populate(valueType, ".startsWith", compareVal, CONJUNCTION_OR);
+                return populate(valueType, ".startsWith", multiCompareValue, CONJUNCTION_OR);
             case notBelong:
-                return populate(valueType, ".startsWith", compareVal, CONJUNCTION_AND, "!");
+                return populate(valueType, ".startsWith", multiCompareValue, CONJUNCTION_AND, "!");
             case endsWith:
-                return populate(valueType, ".endsWith", compareVal, CONJUNCTION_OR);
+                return populate(valueType, ".endsWith", multiCompareValue, CONJUNCTION_OR);
             case includes:
-                return populate(valueType, ".contains", compareVal, CONJUNCTION_OR);
+                return populate(valueType, ".contains", multiCompareValue, CONJUNCTION_OR);
             case excludes:
-                return populate(valueType, ".contains", compareVal, CONJUNCTION_AND, "!");
-            case isNull:
-                return field + " == null";
-            case notNull:
-                return field + " != null";
+                return populate(valueType, ".contains", multiCompareValue, CONJUNCTION_AND, "!");
             default:
                 return expr;
         }
     }
 
-    private Object getCompareValue() {
+    private Object getMultiCompareValue() {
         Object compareVal = value;
         if (value instanceof String && StringUtils.isNotBlank((String) value)) {
             String[] split = StringUtils.split((String) value, " ,");
