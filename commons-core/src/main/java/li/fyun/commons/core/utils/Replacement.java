@@ -13,7 +13,7 @@ public interface Replacement<T extends Replacement> {
 
     void replace(T mirror);
 
-    default T findMirror(List<T> mirrors, T search) {
+    static <T extends Replacement> T findMirror(List<T> mirrors, T search) {
         if (CollectionUtils.isNotEmpty(mirrors)) {
             for (T dest : mirrors) {
                 if (dest.isMirror(search)) {
@@ -24,7 +24,7 @@ public interface Replacement<T extends Replacement> {
         return null;
     }
 
-    default void removeMirror(List<T> mirrors, T search) {
+    static <T extends Replacement> void removeMirror(List<T> mirrors, T search) {
         if (CollectionUtils.isNotEmpty(mirrors)) {
             Iterator<T> iterator = mirrors.iterator();
             while (iterator.hasNext()) {
@@ -37,7 +37,7 @@ public interface Replacement<T extends Replacement> {
     }
 
     @SuppressWarnings("unchecked")
-    default void replaceAll(List<T> oldList, List<T> newList) {
+    static <T extends Replacement> void replaceAll(List<T> oldList, List<T> newList) {
         if (oldList == null) {
             oldList = Lists.newArrayList();
         }
@@ -50,12 +50,12 @@ public interface Replacement<T extends Replacement> {
         Iterator<T> dataFieldIterator = oldList.iterator();
         while (dataFieldIterator.hasNext()) {
             T dataField = dataFieldIterator.next();
-            T mirror = this.findMirror(newList, dataField);
+            T mirror = findMirror(newList, dataField);
             if (mirror == null) {
                 dataFieldIterator.remove();
             } else {
                 dataField.replace(mirror);
-                this.removeMirror(newList, mirror);
+                removeMirror(newList, mirror);
             }
         }
         // 加上新的
