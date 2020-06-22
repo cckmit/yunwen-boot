@@ -60,7 +60,7 @@ public final class RuleHelper {
         Rules rules = new Rules();
         ruleItems.forEach(i -> {
             rules.register(i.asRule().getRule());
-            log.info("rule {} registered, condition {}, action {}",
+            log.debug("rule {} registered, condition {}, action {}",
                     i.getName(), i.getConditionExpression(), i.getActionExpression());
         });
         return new RulesWrapper(rules);
@@ -84,6 +84,8 @@ public final class RuleHelper {
             children.forEach(c -> {
                 RuleWrapper subRule = c.asRule(c.getPriority() + aRule.getPriority());
                 unitRuleGroup.addRule(subRule.getRule());
+                log.debug("child rule {} registered, condition {}, action {}",
+                        c.getName(), c.getConditionExpression(), c.getActionExpression());
             });
             return new RuleWrapper(unitRuleGroup);
         } else {
