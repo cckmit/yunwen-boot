@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -47,7 +48,8 @@ public class SecurityService {
     private CaptchaService captchaService;
     @Resource
     private FileStorage fileStorage;
-    @Resource
+
+    @Autowired(required = false)
     private SecurityMessageService securityMessageService;
 
     @Value("${app.security.account.lock-duration}")
@@ -139,7 +141,9 @@ public class SecurityService {
             // 发送通知邮件
             String content = "您请求重置密码，验证码是：\n\n" + token + "\n\n如果不是您的请求，请忽略此邮件。";
             log.debug("发布密码重置通知事件");
-            securityMessageService.sendSimpleMail(userAccount.getEmail(), "密码重置通知", content);
+            if (securityMessageService != null) {
+                securityMessageService.sendSimpleMail(userAccount.getEmail(), "密码重置通知", content);
+            }
         } else {
             captchaService.sendSmsCaptcha(userAccount.getMobile(), token);
         }
@@ -176,7 +180,9 @@ public class SecurityService {
         content += "请妥善保管密码。";
 
         log.debug("发布密码重置通知事件");
-        securityMessageService.sendSimpleMail(userAccount.getEmail(), "密码重置通知", content);
+        if (securityMessageService != null) {
+            securityMessageService.sendSimpleMail(userAccount.getEmail(), "密码重置通知", content);
+        }
     }
 
     @Transactional

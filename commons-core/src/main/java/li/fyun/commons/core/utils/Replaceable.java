@@ -5,6 +5,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.Iterator;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public interface Replaceable<E extends Replaceable> {
 
     boolean isMirror(E search);

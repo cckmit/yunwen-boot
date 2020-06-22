@@ -6,7 +6,6 @@ dependencies {
     implementation 'org.ehcache:ehcache'
     implementation 'com.github.whvcse:easy-captcha:1.6.2'
     implementation project(":commons-core")
-    implementation project(":commons-messaging")
     implementation project(":commons-fileupload")
 }
 

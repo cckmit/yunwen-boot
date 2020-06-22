@@ -8,6 +8,7 @@ import java.util.List;
 
 public final class CollectionReplacer {
 
+    @SuppressWarnings("unchecked")
     public static  <T extends Replaceable> void replaceAll(List<T> oldList, List<T> newList) {
         if (oldList == null) {
             oldList = Lists.newArrayList();

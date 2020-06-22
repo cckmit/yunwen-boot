@@ -6,6 +6,7 @@ import li.fyun.commons.security.repository.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -27,7 +28,7 @@ public class CaptchaService {
     @Value("${app.sms-template.captcha}")
     private String captchaTemplate;
 
-    @Resource
+    @Autowired(required = false)
     private SecurityMessageService securityMessageService;
     @Resource
     private UserAccountRepository userAccountRepository;
@@ -67,7 +68,9 @@ public class CaptchaService {
     public void sendSmsCaptcha(String mobile, String captcha) {
         Map<String, String> params = new HashMap<>();
         params.put("code", captcha);
-        securityMessageService.sendSms(mobile, captchaTemplate, params);
+        if (securityMessageService != null) {
+            securityMessageService.sendSms(mobile, captchaTemplate, params);
+        }
     }
 
     public void sendEmailCaptcha(String email, String link) {
@@ -75,7 +78,9 @@ public class CaptchaService {
         String captcha = generateEmailKey(email, username);
         UserAccount userAccount = userAccountRepository.findByUsername(username);
         String content = mailContent + link + "?uid=" + userAccount.getId() + "&token=" + captcha;
-        securityMessageService.sendSimpleMail(email, mailSubject, content);
+        if (securityMessageService != null) {
+            securityMessageService.sendSimpleMail(email, mailSubject, content);
+        }
     }
 
     private String generateEmailKey(String email, String username) {
