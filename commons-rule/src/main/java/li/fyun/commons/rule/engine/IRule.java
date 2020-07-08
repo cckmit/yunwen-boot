@@ -10,6 +10,10 @@ public interface IRule {
        return RuleHelper.asRule(this, priority);
     }
 
+    Long getId();
+
+    String getCode();
+
     String getName();
 
     String getDescription();
