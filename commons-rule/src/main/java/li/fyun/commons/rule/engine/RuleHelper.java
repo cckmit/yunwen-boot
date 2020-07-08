@@ -68,7 +68,7 @@ public final class RuleHelper {
 
     public static RuleWrapper asRule(IRule aRule, int priority) {
         Rule rule = new MVELRule()
-                .name(aRule.getName())
+                .name(aRule.getCode())
                 .description(aRule.getDescription())
                 .priority(priority)
                 .when(aRule.getConditionExpression())
