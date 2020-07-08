@@ -4,11 +4,9 @@ import com.google.common.collect.ImmutableList;
 import li.fyun.commons.rule.enums.RuleItemRelation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.jeasy.rules.api.Facts;
-import org.jeasy.rules.api.Rule;
-import org.jeasy.rules.api.Rules;
-import org.jeasy.rules.api.RulesEngine;
+import org.jeasy.rules.api.*;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.core.RulesEngineParameters;
 import org.jeasy.rules.mvel.MVELRule;
@@ -23,12 +21,13 @@ public final class RuleHelper {
 
     public static Map<String, Object> fire(RulesWrapper rulesWrapper,
                                            Map<String, Object> params,
-                                           RuleItemRelation ruleItemRelation) {
+                                           RuleItemRelation ruleItemRelation,
+                                           RuleListener... ruleListeners) {
         if (rulesWrapper == null || rulesWrapper.getRules() == null) {
             return null;
         }
 
-        RulesEngine rulesEngine = createRuleEngine(ruleItemRelation);
+        RulesEngine rulesEngine = createRuleEngine(ruleItemRelation, ruleListeners);
         Facts facts = createFacts(params);
         rulesEngine.fire(rulesWrapper.getRules(), facts);
         return facts.asMap();
@@ -42,14 +41,20 @@ public final class RuleHelper {
         return facts;
     }
 
-    protected static RulesEngine createRuleEngine(RuleItemRelation ruleItemRelation) {
+    public static RulesEngine createRuleEngine(RuleItemRelation ruleItemRelation, RuleListener... ruleListeners) {
         RulesEngineParameters parameters = new RulesEngineParameters();
         if (RuleItemRelation.AND.equals(ruleItemRelation)) {
             parameters.skipOnFirstAppliedRule(false);
         } else {
             parameters.skipOnFirstAppliedRule(true);
         }
-        return new DefaultRulesEngine(parameters);
+        DefaultRulesEngine rulesEngine = new DefaultRulesEngine(parameters);
+        if (ArrayUtils.isNotEmpty(ruleListeners)) {
+            for (RuleListener ruleListener : ruleListeners) {
+                rulesEngine.registerRuleListener(ruleListener);
+            }
+        }
+        return rulesEngine;
     }
 
     public static <E extends IRule> RulesWrapper getRules(List<E> ruleItems) {
