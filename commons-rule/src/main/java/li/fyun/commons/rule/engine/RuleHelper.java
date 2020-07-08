@@ -66,7 +66,7 @@ public final class RuleHelper {
         ruleItems.forEach(i -> {
             rules.register(i.asRule().getRule());
             log.debug("rule {} registered, condition {}, action {}",
-                    i.getName(), i.getConditionExpression(), i.getActionExpression());
+                    i.getCode(), i.getConditionExpression(), i.getActionExpression());
         });
         return new RulesWrapper(rules);
     }
@@ -82,7 +82,7 @@ public final class RuleHelper {
         List<IRule> children = aRule.getChildren();
         if (CollectionUtils.isNotEmpty(aRule.getChildren())) {
             CompositeRule unitRuleGroup = new PostConditionalRuleGroup(
-                    aRule.getName() + "_" + RandomStringUtils.randomAlphabetic(6),
+                    aRule.getCode() + "_" + RandomStringUtils.randomAlphabetic(6),
                     aRule.getPriority(),
                     rule
             );
@@ -90,7 +90,7 @@ public final class RuleHelper {
                 RuleWrapper subRule = c.asRule(c.getPriority() + aRule.getPriority());
                 unitRuleGroup.addRule(subRule.getRule());
                 log.debug("child rule {} registered, condition {}, action {}",
-                        c.getName(), c.getConditionExpression(), c.getActionExpression());
+                        c.getCode(), c.getConditionExpression(), c.getActionExpression());
             });
             return new RuleWrapper(unitRuleGroup);
         } else {
