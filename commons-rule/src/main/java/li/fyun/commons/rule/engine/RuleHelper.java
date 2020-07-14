@@ -9,7 +9,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.jeasy.rules.api.*;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.core.RulesEngineParameters;
-import org.jeasy.rules.mvel.MVELRule;
 import org.jeasy.rules.support.CompositeRule;
 import org.mvel2.MVEL;
 
@@ -72,7 +71,8 @@ public final class RuleHelper {
     }
 
     public static RuleWrapper asRule(IRule aRule, int priority) {
-        Rule rule = new MVELRule()
+        Rule rule = new PlusFactsMVELRule()
+                .setPlusFacts(aRule.getAttachFacts())
                 .name(aRule.getCode())
                 .description(aRule.getDescription())
                 .priority(priority)

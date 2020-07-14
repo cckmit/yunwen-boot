@@ -1,13 +1,14 @@
 package li.fyun.commons.rule.engine;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IRule {
 
     RuleWrapper asRule();
 
     default RuleWrapper asRule(int priority) {
-       return RuleHelper.asRule(this, priority);
+        return RuleHelper.asRule(this, priority);
     }
 
     Long getId();
@@ -25,5 +26,7 @@ public interface IRule {
     String getActionExpression();
 
     <E extends IRule> List<E> getChildren();
+
+    Map<String, Object> getAttachFacts();
 
 }
