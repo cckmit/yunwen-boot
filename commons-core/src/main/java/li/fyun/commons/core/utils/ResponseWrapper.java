@@ -52,6 +52,7 @@ public class ResponseWrapper implements Serializable {
         wrapper.setStatus(HttpStatus.OK.value());
         wrapper.setMessage("SUCCESS");
         wrapper.setPath(path);
+        wrapper.setData(data);
         return wrapper;
     }
 
