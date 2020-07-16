@@ -3,9 +3,7 @@ package li.fyun.commons.core.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
@@ -15,8 +13,6 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Slf4j
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseWrapper implements Serializable {
@@ -25,11 +21,14 @@ public class ResponseWrapper implements Serializable {
 
     private long timestamp;
     private int status;
+    private String message;
+    private Object data;
     private String error;
     private String exception;
-    private String message;
     private String path;
-    private Object data;
+
+    private ResponseWrapper() {
+    }
 
     private ResponseWrapper(Throwable ex, int status, String message, String path) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
