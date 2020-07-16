@@ -1,6 +1,6 @@
 package li.fyun.commons.jwt;
 
-import li.fyun.commons.core.utils.ErrorResponse;
+import li.fyun.commons.core.utils.ResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -38,8 +38,8 @@ public class JwtAuthcFilter extends OncePerRequestFilter {
         if (ex instanceof AuthenticationException) {
             httpStatus = HttpStatus.UNAUTHORIZED;
         }
-        ErrorResponse errorResponse = new ErrorResponse(ex, httpStatus.value(), request.getRequestURI());
-        errorResponse.print(response);
+        ResponseWrapper responseWrapper = ResponseWrapper.error(ex, httpStatus.value(), request.getRequestURI());
+        responseWrapper.print(response);
     }
 
     @Override

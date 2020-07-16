@@ -2,7 +2,7 @@ package li.fyun.commons.core.controller;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import li.fyun.commons.core.utils.DateEditor;
-import li.fyun.commons.core.utils.ErrorResponse;
+import li.fyun.commons.core.utils.ResponseWrapper;
 import li.fyun.commons.core.utils.YunwenException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -163,14 +163,14 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleErrorInfo(Exception ex, String path, HttpStatus status, WebRequest request) {
         this.logTrace(ex);
-        ErrorResponse errorResponse = new ErrorResponse(ex, status.value(), path);
-        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.valueOf(errorResponse.getStatus()), request);
+        ResponseWrapper responseWrapper = ResponseWrapper.error(ex, status.value(), path);
+        return handleExceptionInternal(ex, responseWrapper, new HttpHeaders(), HttpStatus.valueOf(responseWrapper.getStatus()), request);
     }
 
     protected ResponseEntity<Object> handleErrorInfo(Exception ex, String path, HttpStatus status, String message, WebRequest request) {
         this.logTrace(ex);
-        ErrorResponse errorResponse = new ErrorResponse(ex, status.value(), message, path);
-        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), HttpStatus.valueOf(errorResponse.getStatus()), request);
+        ResponseWrapper responseWrapper = ResponseWrapper.error(ex, status.value(), message, path);
+        return handleExceptionInternal(ex, responseWrapper, new HttpHeaders(), HttpStatus.valueOf(responseWrapper.getStatus()), request);
     }
 
     private void logTrace(Exception ex) {

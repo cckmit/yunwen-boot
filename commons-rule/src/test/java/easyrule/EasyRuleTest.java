@@ -7,6 +7,10 @@ import org.jeasy.rules.api.RulesEngine;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.mvel.MVELRule;
 import org.junit.Test;
+import org.mvel2.MVEL;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EasyRuleTest {
 
@@ -31,6 +35,13 @@ public class EasyRuleTest {
         rulesEngine.fire(rules, facts);
 
         System.out.println(facts.get("result").toString());
+    }
+
+    public static void main(String[] args) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("x", 2);
+        MVEL.eval("fee1 = (if (x == 3) 13*x; else if (x == 2) 12*x; else 10*x;)", params);
+        System.out.println(params);
     }
 
 }

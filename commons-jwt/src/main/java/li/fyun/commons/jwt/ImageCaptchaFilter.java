@@ -1,6 +1,6 @@
 package li.fyun.commons.jwt;
 
-import li.fyun.commons.core.utils.ErrorResponse;
+import li.fyun.commons.core.utils.ResponseWrapper;
 import li.fyun.commons.security.service.CaptchaService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +30,7 @@ public class ImageCaptchaFilter extends OncePerRequestFilter {
             captchaService.validateImageCaptcha(captchaKey, captchaValue);
             filterChain.doFilter(request, response);
         } catch (RuntimeException ex) {
-            new ErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI())
+            ResponseWrapper.error(ex, HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI())
                     .print(response);
         }
     }

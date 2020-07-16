@@ -1,6 +1,6 @@
 package li.fyun.commons.jwt;
 
-import li.fyun.commons.core.utils.ErrorResponse;
+import li.fyun.commons.core.utils.ResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,8 +54,8 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                                               HttpServletResponse response,
                                               AuthenticationException failed)
             throws IOException {
-        ErrorResponse errorResponse = new ErrorResponse(failed, HttpStatus.INTERNAL_SERVER_ERROR.value(), LOGIN_URL);
-        errorResponse.print(response);
+        ResponseWrapper responseWrapper = ResponseWrapper.error(failed, HttpStatus.INTERNAL_SERVER_ERROR.value(), LOGIN_URL);
+        responseWrapper.print(response);
     }
 
 }
