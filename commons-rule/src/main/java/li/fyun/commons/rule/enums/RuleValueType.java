@@ -7,8 +7,9 @@ import java.util.Map;
 
 public enum RuleValueType {
 
-    NUMERIC("数值型"),
-    STRING("字符型");
+    STRING("字符型"),
+    NUMERIC("数值型");
+//    BOOLEAN("布尔型"),
 //    DATE("日期型");
 
     private String displayName;
