@@ -145,6 +145,9 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         String expr = "(";
         boolean starts = true;
         for (Object val : valueList) {
+            if (val == null) {
+                continue;
+            }
             if (!starts) {
                 expr += conjunction;
             }
