@@ -169,6 +169,8 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
     private Object wrapValueToProperType(Object value, RuleValueType valueType) {
         if (RuleValueType.NUMERIC.equals(valueType)) {
             return value;
+        } else if (value instanceof List && CollectionUtils.isNotEmpty((List) value)) {
+            return "'" + ((List) value).get(0).toString() + "'";
         } else {
             return "'" + value + "'";
         }
