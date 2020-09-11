@@ -34,9 +34,9 @@ import java.util.Date;
 import java.util.List;
 
 @Order
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
-public class RestControllerAdvice extends ResponseEntityExceptionHandler {
+public class DefaultRestControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Value("${app.group-name:'li.fyun'}")
     private String appGroupName;
