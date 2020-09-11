@@ -3,12 +3,8 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/public' }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.3.0.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.3.3.RELEASE")
     }
-}
-
-plugins {
-    id 'net.ltgt.apt' version '0.21'
 }
 
 def versionTag() {
@@ -32,7 +28,6 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'maven'
-    apply plugin: 'net.ltgt.apt-idea'
 
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {

@@ -8,8 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeasy.rules.api.*;
 import org.jeasy.rules.core.DefaultRulesEngine;
-import org.jeasy.rules.core.RulesEngineParameters;
-import org.jeasy.rules.support.CompositeRule;
+import org.jeasy.rules.support.composite.CompositeRule;
 import org.mvel2.MVEL;
 
 import java.util.List;
