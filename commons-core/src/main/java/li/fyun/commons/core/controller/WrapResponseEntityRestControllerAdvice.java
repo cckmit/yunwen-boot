@@ -35,11 +35,11 @@ public class WrapResponseEntityRestControllerAdvice extends DefaultRestControlle
                                   MediaType selectedContentType, Class selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
         //判断url是否需要拦截
-        if (this.shouldIgnore(request.getURI().toString())) {
+        String uri = request.getURI().getPath();
+        if (this.shouldIgnore(uri)) {
             return body;
         }
 
-        String uri = request.getURI().getPath();
         if (body instanceof Map && CollectionUtils.containsAll(((Map) body).keySet(), WRAP_FIELDS)) {
             return body;
         }
