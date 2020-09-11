@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import li.fyun.commons.core.utils.ResponseWrapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestControllerAdvice
+@ConditionalOnProperty(name = "app.wrap-response-entity.enable", havingValue = "true")
 public class WrapResponseEntityRestControllerAdvice extends DefaultRestControllerAdvice implements ResponseBodyAdvice<Object> {
 
     private static final Set<String> WRAP_FIELDS = ImmutableSet.of("timestamp", "status", "message", "path");
