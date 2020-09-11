@@ -3,17 +3,20 @@ package li.fyun.commons.core.controller;
 import com.google.common.collect.ImmutableSet;
 import li.fyun.commons.core.utils.ResponseWrapper;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.lang.Nullable;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,12 +37,12 @@ public class WrapResponseEntityRestControllerAdvice extends DefaultRestControlle
     public Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType,
                                   MediaType selectedContentType, Class selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
+        HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
+        String uri = StringUtils.substringAfter(req.getRequestURI(), req.getContextPath());
         //判断url是否需要拦截
-        String uri = request.getURI().getPath();
         if (this.shouldIgnore(uri)) {
             return body;
         }
-
         if (body instanceof Map && CollectionUtils.containsAll(((Map) body).keySet(), WRAP_FIELDS)) {
             return body;
         }
