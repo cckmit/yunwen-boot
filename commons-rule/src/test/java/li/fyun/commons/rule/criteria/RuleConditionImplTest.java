@@ -1,4 +1,4 @@
-package li.fyun.commons.rule.criteria.rule;
+package li.fyun.commons.rule.criteria;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
@@ -68,7 +68,8 @@ public class RuleConditionImplTest {
         param4.setCode("customer");
         param4.setValueType(RuleValueType.STRING);
 
-        String result = condition.build(ImmutableList.of(param, param1, param2, param3, param4));
+        String result = RuleConditionBuilder.getInstance()
+                .build(condition, ImmutableList.of(param, param1, param2, param3, param4));
         System.out.println(result);
     }
 

@@ -1,7 +1,7 @@
-package li.fyun.commons.rule.criteria.rule;
+package li.fyun.commons.rule.criteria;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import li.fyun.commons.rule.criteria.Criterion;
+import li.fyun.commons.core.criteria.Criterion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;

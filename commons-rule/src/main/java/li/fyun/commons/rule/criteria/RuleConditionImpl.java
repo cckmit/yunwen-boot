@@ -1,10 +1,10 @@
-package li.fyun.commons.rule.criteria.rule;
+package li.fyun.commons.rule.criteria;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import li.fyun.commons.rule.RuleException;
-import li.fyun.commons.rule.criteria.Condition;
+import li.fyun.commons.core.criteria.Condition;
 import lombok.Getter;
 import lombok.Setter;
 

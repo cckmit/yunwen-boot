@@ -37,31 +37,32 @@ public interface Replacement<T extends Replacement> {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends Replacement> void replaceAll(List<T> oldList, List<T> newList) {
-        if (oldList == null) {
-            oldList = Lists.newArrayList();
+    static <T extends Replacement> List<T> replaceAll(List<T> origin, List<T> replaces) {
+        if (origin == null) {
+            origin = Lists.newArrayList();
         }
 
-        if (CollectionUtils.isEmpty(newList)) {
-            oldList.clear();
-            return;
+        if (CollectionUtils.isEmpty(replaces)) {
+            origin.clear();
+            return origin;
         }
 
-        Iterator<T> dataFieldIterator = oldList.iterator();
+        Iterator<T> dataFieldIterator = origin.iterator();
         while (dataFieldIterator.hasNext()) {
             T dataField = dataFieldIterator.next();
-            T mirror = findMirror(newList, dataField);
+            T mirror = findMirror(replaces, dataField);
             if (mirror == null) {
                 dataFieldIterator.remove();
             } else {
                 dataField.replace(mirror);
-                removeMirror(newList, mirror);
+                removeMirror(replaces, mirror);
             }
         }
         // 加上新的
-        if (CollectionUtils.isNotEmpty(newList)) {
-            oldList.addAll(newList);
+        if (CollectionUtils.isNotEmpty(replaces)) {
+            origin.addAll(replaces);
         }
+        return origin;
     }
 
 }

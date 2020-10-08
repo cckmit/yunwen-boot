@@ -1,4 +1,4 @@
-package li.fyun.commons.rule.criteria;
+package li.fyun.commons.core.criteria;
 
 public interface Expression<T extends Expression, OP> extends Criterion<T> {
 

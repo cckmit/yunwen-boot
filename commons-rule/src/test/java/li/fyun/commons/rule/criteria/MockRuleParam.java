@@ -1,4 +1,4 @@
-package li.fyun.commons.rule.criteria.rule;
+package li.fyun.commons.rule.criteria;
 
 import li.fyun.commons.rule.engine.IParam;
 import li.fyun.commons.rule.enums.RuleValueType;

@@ -1,8 +1,8 @@
-package li.fyun.commons.rule.criteria.rule;
+package li.fyun.commons.rule.criteria;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import li.fyun.commons.rule.RuleException;
-import li.fyun.commons.rule.criteria.Expression;
+import li.fyun.commons.core.criteria.Expression;
 import li.fyun.commons.rule.engine.IParam;
 import li.fyun.commons.rule.enums.RuleComparator;
 import li.fyun.commons.rule.enums.RuleValueType;
@@ -56,7 +56,6 @@ public class RuleExpressionImpl extends RuleCriterionImpl implements Expression<
         return true;
     }
 
-    @Override
     public <E extends IParam> String build(List<E> ruleParams) {
         Assert.isTrue(this.validate(), "查询条件无效");
 
