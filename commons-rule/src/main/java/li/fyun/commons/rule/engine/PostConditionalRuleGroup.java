@@ -2,7 +2,7 @@ package li.fyun.commons.rule.engine;
 
 import org.jeasy.rules.api.Facts;
 import org.jeasy.rules.api.Rule;
-import org.jeasy.rules.support.composite.CompositeRule;
+import org.jeasy.rules.support.CompositeRule;
 
 public class PostConditionalRuleGroup extends CompositeRule {
 

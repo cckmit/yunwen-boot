@@ -1,5 +1,5 @@
 dependencies {
-    implementation 'org.jeasy:easy-rules-mvel:4.0.0'
+    implementation 'org.jeasy:easy-rules-mvel:3.4.0'
     implementation project(":commons-core")
 }
 
