@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -154,8 +155,18 @@ public class DefaultRestControllerAdvice extends ResponseEntityExceptionHandler 
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = BadSqlGrammarException.class)
+    public ResponseEntity<Object> handleBadSqlGrammarException(BadSqlGrammarException ex, WebRequest request,
+                                                               HttpServletRequest httpServletRequest) {
+        return handleErrorInfo(ex, httpServletRequest.getRequestURI(),
+                HttpStatus.INTERNAL_SERVER_ERROR, "SQL语法错误", request);
+
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = YunwenException.class)
-    public ResponseEntity<Object> handleYunwenException(YunwenException ex, WebRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> handleYunwenException(YunwenException ex, WebRequest request,
+                                                        HttpServletRequest httpServletRequest) {
         return handleErrorInfo(ex, httpServletRequest.getRequestURI(),
                 HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request);
 
@@ -164,13 +175,16 @@ public class DefaultRestControllerAdvice extends ResponseEntityExceptionHandler 
     protected ResponseEntity<Object> handleErrorInfo(Exception ex, String path, HttpStatus status, WebRequest request) {
         this.logTrace(ex);
         ResponseWrapper responseWrapper = ResponseWrapper.error(ex, status.value(), path);
-        return handleExceptionInternal(ex, responseWrapper, new HttpHeaders(), HttpStatus.valueOf(responseWrapper.getStatus()), request);
+        return handleExceptionInternal(ex, responseWrapper, new HttpHeaders(),
+                HttpStatus.valueOf(responseWrapper.getStatus()), request);
     }
 
-    protected ResponseEntity<Object> handleErrorInfo(Exception ex, String path, HttpStatus status, String message, WebRequest request) {
+    protected ResponseEntity<Object> handleErrorInfo(Exception ex, String path, HttpStatus status, String message,
+                                                     WebRequest request) {
         this.logTrace(ex);
         ResponseWrapper responseWrapper = ResponseWrapper.error(ex, status.value(), message, path);
-        return handleExceptionInternal(ex, responseWrapper, new HttpHeaders(), HttpStatus.valueOf(responseWrapper.getStatus()), request);
+        return handleExceptionInternal(ex, responseWrapper, new HttpHeaders(),
+                HttpStatus.valueOf(responseWrapper.getStatus()), request);
     }
 
     private void logTrace(Exception ex) {
