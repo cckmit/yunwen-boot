@@ -17,6 +17,7 @@ public class RuleConditionImpl extends RuleCriterionImpl implements Condition<Ru
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private List<RuleOrderImpl> orders;
+    private List<String> groups;
 
     public static RuleConditionImpl fromJson(String json) {
         try {

@@ -6,6 +6,7 @@ import org.jeasy.rules.api.Rules;
 import org.jeasy.rules.api.RulesEngine;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.mvel.MVELRule;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mvel2.MVEL;
 
@@ -20,12 +21,15 @@ public class EasyRuleTest {
                 .name("age rule")
                 .description("test rule")
                 .priority(1)
-                .when("age > 18")
-                .then("result = 'OK'");
+                .when("ruleParams.age > 18")
+                .then("ruleParams.result = 'OK'");
+
+        Map<String, Object> ruleParams = new HashMap<>();
+        ruleParams.put("age", 19);
+        ruleParams.put("grade", "V1");
 
         Facts facts = new Facts();
-        facts.put("age", 19);
-        facts.put("grade", "V1");
+        facts.put("ruleParams", ruleParams);
 
         // create rules
         Rules rules = new Rules();
@@ -34,7 +38,7 @@ public class EasyRuleTest {
         RulesEngine rulesEngine = new DefaultRulesEngine();
         rulesEngine.fire(rules, facts);
 
-        System.out.println(facts.get("result").toString());
+        Assert.assertEquals("OK", ruleParams.get("result"));
     }
 
     public static void main(String[] args) {
