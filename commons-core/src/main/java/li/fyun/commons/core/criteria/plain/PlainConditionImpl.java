@@ -15,5 +15,6 @@ public class PlainConditionImpl extends PlainCriterionImpl implements Condition<
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private List<PlainOrderImpl> orders;
+    private List<String> groups;
 
 }
