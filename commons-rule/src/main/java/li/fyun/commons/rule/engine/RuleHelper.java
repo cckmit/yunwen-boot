@@ -1,9 +1,11 @@
 package li.fyun.commons.rule.engine;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import li.fyun.commons.rule.enums.RuleItemRelation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeasy.rules.api.*;
@@ -18,10 +20,12 @@ import java.util.Map;
 @Slf4j
 public final class RuleHelper {
 
-    public static Map<String, Object> fire(RulesWrapper rulesWrapper,
-                                           Map<String, Object> params,
-                                           RuleItemRelation ruleItemRelation,
-                                           RuleListener... ruleListeners) {
+    public static final String RESULT_PREFIX = "result";
+
+    public static Facts fire(RulesWrapper rulesWrapper,
+                             Map<String, Object> params,
+                             RuleItemRelation ruleItemRelation,
+                             RuleListener... ruleListeners) {
         if (rulesWrapper == null || rulesWrapper.getRules() == null) {
             return null;
         }
@@ -29,14 +33,19 @@ public final class RuleHelper {
         RulesEngine rulesEngine = createRuleEngine(ruleItemRelation, ruleListeners);
         Facts facts = createFacts(params);
         rulesEngine.fire(rulesWrapper.getRules(), facts);
-        return facts.asMap();
+        return facts;
     }
 
     public static Facts createFacts(Map<String, Object> values) {
         Facts facts = new Facts();
-        values.forEach((k, v) -> {
-            facts.put(k, v);
-        });
+        if (MapUtils.isNotEmpty(values)) {
+            values.forEach((k, v) -> {
+                if (v != null) {
+                    facts.put(k, v);
+                }
+            });
+        }
+        facts.put(RESULT_PREFIX, Maps.newLinkedHashMap());
         return facts;
     }
 
@@ -98,7 +107,7 @@ public final class RuleHelper {
         }
     }
 
-    public static Map<String, Object> testSingleRule(IRule rule, Map<String, Object> param) {
+    public static Facts testSingleRule(IRule rule, Map<String, Object> param) {
         RulesWrapper rules = RuleHelper.getRules(ImmutableList.of(rule));
         return RuleHelper.fire(rules, param, RuleItemRelation.AND);
     }
